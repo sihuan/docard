@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>2018级同学每日数据报送</title>
+</head>
+
+<body class="mdui-theme-primary-purple mdui-theme-layout-dark">
+    <div class="mdui-toolbar mdui-color-grey-500" style="margin-bottom:50px">
+        <div class="mdui-toolbar-spacer"></div>
+        <span class="mdui-typo-title">2018级同学每日数据报送</span>
+        <div class="mdui-toolbar-spacer"></div>
+    </div>
+    <div id="app" class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-col-12">
+                <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                    <div :class="{ 'mdui-textfield-invalid': status=='0' }"
+                        class="mdui-textfield mdui-textfield-floating-label">
+                        <i class="mdui-icon material-icons">account_circle</i>
+                        <label class="mdui-textfield-label">学号</label>
+                        <input v-model="sid" class="mdui-textfield-input" type="text" />
+                        <div class="mdui-textfield-error">查不到这个学号！</div>
+                        <div class="mdui-textfield-helper">请输入12位学号</div>
+                    </div>
+                    <div class="mdui-card-actions">
+                        <button @click="checksid" class="mdui-btn mdui-ripple mdui-color-grey">检查</button>
+                    </div>
+                </div>
+                <div v-if="status=='1'">
+                    <div class="mdui-textfield">
+                        <input :value="studentinfo.name" class="mdui-textfield-input" type="text" disabled />
+                    </div>
+                    <div class="mdui-textfield">
+                        <input :value="studentinfo.major" class="mdui-textfield-input" type="text" disabled />
+                    </div>
+                    <div class="mdui-textfield">
+                        <input :value="studentinfo.classroom" class="mdui-textfield-input" type="text" disabled />
+                    </div>
+
+                    <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                        <div class="mdui-textfield mdui-textfield-floating-label">
+                            <i class="mdui-icon material-icons">home</i>
+                            <label class="mdui-textfield-label">现在所在地</label>
+                            <input v-model="nowarea" class="mdui-textfield-input" type="text" />
+                        </div>
+
+                        <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
+                            今日体温是否在正常体温36.1-36.8度之间？</div>
+                        <div style="margin-left: 30px;">
+                            <label class="mdui-radio">
+                                <input type="radio" value="正常" name="te" v-model="tep" />
+                                <i class="mdui-radio-icon"></i>
+                                是
+                            </label>
+
+                            <label class="mdui-radio">
+                                <input type="radio" value="异常" name="te" v-model="tep" />
+                                <i class="mdui-radio-icon"></i>
+                                否
+                            </label>
+
+                        </div>
+                        <div v-if="tep=='异常'" class="mdui-textfield mdui-textfield-floating-label">
+                            <label class="mdui-textfield-label">现在体温情况</label>
+                            <input v-model="te" class="mdui-textfield-input" type="text" />
+                        </div>
+
+                        <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
+                            是否知晓未经学校批准禁止返青、返校的通知？</div>
+                        <div style="margin-left: 30px;">
+                            <label class="mdui-radio">
+                                <input type="radio" value="知晓" name="nr" v-model="noreturn" />
+                                <i class="mdui-radio-icon"></i>
+                                是
+                            </label>
+
+                            <label class="mdui-radio">
+                                <input type="radio" value="不知晓" name="nr" v-model="noreturn" />
+                                <i class="mdui-radio-icon"></i>
+                                否
+                            </label>
+                        </div>
+                        <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
+                            最近20天之内有无更换过居住地？</div>
+                        <div style="margin-left: 30px;">
+                            <label class="mdui-radio">
+                                <input type="radio" value="否" name="ca" v-model="cap" />
+                                <i class="mdui-radio-icon"></i>
+                                无
+                            </label>
+
+                            <label class="mdui-radio">
+                                <input type="radio" value="是" name="ca" v-model="cap" />
+                                <i class="mdui-radio-icon"></i>
+                                是
+                            </label>
+
+                        </div>
+                        <div v-if="cap=='是'" class="mdui-textfield mdui-textfield-floating-label">
+                            <label class="mdui-textfield-label">具体情况</label>
+                            <input v-model="caa" class="mdui-textfield-input" type="text" />
+                        </div>
+                        <div class="mdui-card-actions">
+                            <button @click="docard" class="mdui-btn mdui-ripple mdui-color-grey">打卡</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mdui-dialog" id="dialog">
+        <div class="mdui-dialog-title">提交失败！</div>
+        <div class="mdui-dialog-content">请检查填写是否有误</div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>嗯</button>
+        </div>
+    </div>
+
+    <div class="mdui-dialog" id="dialogok">
+        <div class="mdui-dialog-title">打卡成功！</div>
+        <div class="mdui-dialog-content">请关闭网页即可。</div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>嗯</button>
+        </div>
+    </div>
+
+    <div class="mdui-dialog" id="dialognok">
+        <div class="mdui-dialog-title">打卡失败！</div>
+        <div class="mdui-dialog-content">请检查填写，确认无误请重新提交，如果有任何问题请联系开发者.</div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>嗯</button>
+        </div>
+    </div>
+
+    <script>
+        app = new Vue({
+            el: "#app",
+            data: {
+                status: "-1",
+                sid: '',
+                studentinfo: {},
+                nowarea: '',
+                te: '',
+                tep: '',
+                noreturn: '',
+                cap: '',
+                caa: '',
+
+            },
+            methods: {
+                checksid: function () {
+                    axios.post('/getstudent', {
+                            sid: this.sid,
+                        })
+                        .then((response => (this.status = response.data.status, this.studentinfo = response
+                            .data.student)))
+                },
+                docard: function () {
+                    if (this.nowarea != '') {
+                        now = this.nowarea
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
+                    if (this.tep == '正常' || (this.tep == '异常' && this.te != '')) {
+                        if (this.tep == '异常') {
+                            te = this.te
+                        } else {
+                            te = '正常'
+                        }
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
+                    if (this.noreturn != '') {
+                        know = this.noreturn
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
+                    if (this.cap == '否' || (this.cap == '是' && this.caa != '')) {
+                        if (this.cap == '是') {
+                            change = this.caa
+                        } else {
+                            change = '否'
+                        }
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
+                    if (this.status != '1') {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
+                    axios.post('/docard', {
+                            sid: this.sid,
+                            now: now,
+                            te: te,
+                            know: know,
+                            change: change,
+                        })
+                        .then(function (resp) {
+                            status = resp.data.status
+                            if (status == '1') {
+                                var inst = new mdui.Dialog('#dialogok');
+                                inst.open()
+                            } else {
+                                var inst = new mdui.Dialog('#dialognok');
+                                inst.open()
+                            }
+                        })
+
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

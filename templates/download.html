@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载报表</title>
+</head>
+
+<body>
+    <button onclick="download()">下载报表</button>
+    <script>
+        function download() {
+            url = '/download/' + getDatetime()
+            console.log(url)
+            window.location.href = url
+        }
+
+        function getDatetime() {
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = change(d.getMonth() + 1);
+            var day = change(d.getDate());
+            var hour = change(d.getHours());
+            var minute = change(d.getMinutes());
+            function change(t) {
+                if (t < 10) {
+                    return "0" + t;
+                } else {
+                    return t;
+                }
+            }
+            var time = year + '-' + month + '-' + day + '_' +
+                hour + ':' + minute;
+            return time;
+        }
+    </script>
+</body>
+
+</html>

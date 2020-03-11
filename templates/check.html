@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>2018级同学每日数据报送</title>
+</head>
+
+<body class="mdui-theme-primary-purple mdui-theme-layout-dark">
+    <div class="mdui-toolbar mdui-color-grey-500" style="margin-bottom:50px">
+        <div class="mdui-toolbar-spacer"></div>
+        <span class="mdui-typo-title">2018级同学每日数据报送</span>
+        <div class="mdui-toolbar-spacer"></div>
+    </div>
+    <div id="app" class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-col-12">
+                <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                    <select class="mdui-select" v-model="selected">
+                        <option disabled value="">请选择</option>
+                        <option value="采矿工程2018-1班">采矿工程2018-1班</option>
+                        <option value="采矿工程2018-2班">采矿工程2018-2班</option>
+                        <option value="采矿工程2018-3班">采矿工程2018-3班</option>
+                        <option value="采矿工程2018-4班">采矿工程2018-4班</option>
+                        <option value="采矿工程2018-5班">采矿工程2018-5班</option>
+                        <option value="采矿工程2018-6班">采矿工程2018-6班</option>
+                        <option value="工业工程2018-1班">工业工程2018-1班</option>
+                        <option value="工业工程2018-2班">工业工程2018-2班</option>
+                        <option value="工业工程2018-3班">工业工程2018-3班</option>
+                        <option value="工程力学2018-1班">工程力学2018-1班</option>
+                        <option value="工程力学2018-2班">工程力学2018-2班</option>
+                        <option value="工程力学2018-3班">工程力学2018-3班</option>
+                    </select>
+                    <div class="mudi-container">
+                        <div class="mdui-row">
+                            <div class="mdui-col-4">
+                                <div class="mdui-table">
+                                    <table class="mdui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>未填写</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in wdk">
+                                                {% raw %}
+                                                <td>
+                                                    {{ item }}
+                                                </td>
+                                                {% endraw %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mdui-col-4">
+                                <div class="mdui-table">
+                                    <table class="mdui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>已填写</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in ydk">
+                                                {% raw %}
+                                                <td>
+                                                    {{ item }}
+                                                </td>
+                                                {% endraw %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="mdui-col-4">
+                                <div class="mdui-table">
+                                    <table class="mdui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>异常</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in yc">
+                                                {% raw %}
+                                                <td>
+                                                    {{ item }}
+                                                </td>
+                                                {% endraw %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        app = new Vue({
+            el: "#app",
+            data: {
+                selected: '',
+                ydk: [],
+                wdk: [],
+                yc: [],
+
+            },
+            watch: {
+                selected: function (val) {
+                    axios.post('/checkdata', {
+                            classroom: val
+                        })
+                        .then((res => (this.ydk = res.data.ydk, this.wdk = res.data.wdk, this.yc = res.data
+                            .yc)))
+                },
+            },
+            methods: {
+                checksid: function () {
+                    axios.post('/getstudent', {
+                            sid: this.sid,
+                        })
+                        .then((response => (this.status = response.data.status, this.studentinfo = response
+                            .data.student)))
+                },
+            }
+        })
+    </script>
+</body>
+
+</html>
