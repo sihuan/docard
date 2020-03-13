@@ -8,11 +8,12 @@
     <script src="{{ url_for('static', filename='js/mdui.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
     <script src="{{ url_for('static', filename='js/axios.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>2018级同学每日数据报送</title>
 </head>
 
-<body class="mdui-theme-primary-purple mdui-theme-layout-dark">
-    <div class="mdui-toolbar mdui-color-grey-500" style="margin-bottom:50px">
+<body class="mdui-theme-primary-teal mdui-theme-accent-teal">
+    <div class="mdui-toolbar mdui-color-teal-100" style="margin-bottom:50px">
         <div class="mdui-toolbar-spacer"></div>
         <span class="mdui-typo-title">2018级同学每日数据报送</span>
         <div class="mdui-toolbar-spacer"></div>
@@ -20,7 +21,7 @@
     <div id="app" class="mdui-container">
         <div class="mdui-row">
             <div class="mdui-col-12">
-                <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                <div class="mdui-card" style="padding: 10px;">
                     <select class="mdui-select" v-model="selected">
                         <option disabled value="">请选择</option>
                         <option value="采矿工程2018-1班">采矿工程2018-1班</option>
