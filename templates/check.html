@@ -36,68 +36,61 @@
                         <option value="工程力学2018-2班">工程力学2018-2班</option>
                         <option value="工程力学2018-3班">工程力学2018-3班</option>
                     </select>
-                    <div class="mudi-container">
-                        <div class="mdui-row">
-                            <div class="mdui-col-4">
-                                <div class="mdui-table">
-                                    <table class="mdui-table">
-                                        <thead>
-                                            <tr>
-                                                <th>未填写</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in wdk">
-                                                {% raw %}
-                                                <td>
-                                                    {{ item }}
-                                                </td>
-                                                {% endraw %}
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="mdui-col-4">
-                                <div class="mdui-table">
-                                    <table class="mdui-table">
-                                        <thead>
-                                            <tr>
-                                                <th>已填写</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in ydk">
-                                                {% raw %}
-                                                <td>
-                                                    {{ item }}
-                                                </td>
-                                                {% endraw %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="mdui-col-4">
-                                <div class="mdui-table">
-                                    <table class="mdui-table">
-                                        <thead>
-                                            <tr>
-                                                <th>异常</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="item in yc">
-                                                {% raw %}
-                                                <td>
-                                                    {{ item }}
-                                                </td>
-                                                {% endraw %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                    <h3>异常</h3>
+                    <div class="mdui-table">
+                        <table class="mdui-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in yc">
+                                    {% raw %}
+                                    <td>
+                                        {{ item }}
+                                    </td>
+                                    {% endraw %}
+                            </tbody>
+                        </table>
                     </div>
+                    <h3>未填写</h3>
+                    <div class="mdui-table">
+                        <table class="mdui-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in wdk">
+                                    {% raw %}
+                                    <td>
+                                        {{ item }}
+                                    </td>
+                                    {% endraw %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h3>已填写</h3>
+                <div class="mdui-table">
+                    <table class="mdui-table">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in ydk">
+                                {% raw %}
+                                <td>
+                                    {{ item }}
+                                </td>
+                                {% endraw %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
