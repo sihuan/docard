@@ -11,8 +11,8 @@
     <title>2018级同学每日数据报送</title>
 </head>
 
-<body class="mdui-theme-primary-purple mdui-theme-layout-dark">
-    <div class="mdui-toolbar mdui-color-grey-500" style="margin-bottom:50px">
+<body class="mdui-theme-primary-teal mdui-theme-accent-teal">
+    <div class="mdui-toolbar mdui-color-teal-100" style="margin-bottom:50px">
         <div class="mdui-toolbar-spacer"></div>
         <span class="mdui-typo-title">2018级同学每日数据报送</span>
         <div class="mdui-toolbar-spacer"></div>
@@ -20,7 +20,7 @@
     <div id="app" class="mdui-container">
         <div class="mdui-row">
             <div class="mdui-col-12">
-                <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                <div class="mdui-card" style="padding: 10px;">
                     <div :class="{ 'mdui-textfield-invalid': status=='0' }"
                         class="mdui-textfield mdui-textfield-floating-label">
                         <i class="mdui-icon material-icons">account_circle</i>
@@ -30,21 +30,18 @@
                         <div class="mdui-textfield-helper">请输入12位学号</div>
                     </div>
                     <div class="mdui-card-actions">
-                        <button @click="checksid" class="mdui-btn mdui-ripple mdui-color-grey">检查</button>
+                        <button @click="checksid" class="mdui-btn mdui-ripple mdui-color-teal-300">检查</button>
                     </div>
-                </div>
-                <div v-if="status=='1'">
-                    <div class="mdui-textfield">
-                        <input :value="studentinfo.name" class="mdui-textfield-input" type="text" disabled />
-                    </div>
-                    <div class="mdui-textfield">
-                        <input :value="studentinfo.major" class="mdui-textfield-input" type="text" disabled />
-                    </div>
-                    <div class="mdui-textfield">
-                        <input :value="studentinfo.classroom" class="mdui-textfield-input" type="text" disabled />
-                    </div>
-
-                    <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                    <div v-if="status=='1'">
+                        <div class="mdui-textfield">
+                            <input :value="studentinfo.name" class="mdui-textfield-input" type="text" disabled />
+                        </div>
+                        <div class="mdui-textfield">
+                            <input :value="studentinfo.major" class="mdui-textfield-input" type="text" disabled />
+                        </div>
+                        <div class="mdui-textfield">
+                            <input :value="studentinfo.classroom" class="mdui-textfield-input" type="text" disabled />
+                        </div>
                         <div class="mdui-textfield mdui-textfield-floating-label">
                             <i class="mdui-icon material-icons">home</i>
                             <label class="mdui-textfield-label">现在所在地</label>
@@ -108,7 +105,7 @@
                             <input v-model="caa" class="mdui-textfield-input" type="text" />
                         </div>
                         <div class="mdui-card-actions">
-                            <button @click="docard" class="mdui-btn mdui-ripple mdui-color-grey">打卡</button>
+                            <button @click="docard" class="mdui-btn mdui-ripple mdui-color-teal-300">打卡</button>
                         </div>
                     </div>
                 </div>
