@@ -122,15 +122,6 @@
                             .yc)))
                 },
             },
-            methods: {
-                checksid: function () {
-                    axios.post('/getstudent', {
-                            sid: this.sid,
-                        })
-                        .then((response => (this.status = response.data.status, this.studentinfo = response
-                            .data.student)))
-                },
-            }
         })
     </script>
 </body>

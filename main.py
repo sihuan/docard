@@ -15,6 +15,7 @@ def index():
 def check():
     return render_template('check.html')
 
+
 @app.route('/checkdata', methods=['POST'])
 def checkdata():
     data = request.json
@@ -22,14 +23,26 @@ def checkdata():
     s = work.checkdata(cr)
     return s
 
-@app.route('/tips',methods=['POST'])
+
+@app.route('/checkall')
+def checkall():
+    return render_template('checkall.html')
+
+
+@app.route('/checkalldata', methods=['POST'])
+def checkalldata():
+    s = work.checkalldata()
+    return s
+
+
+@app.route('/tips', methods=['POST'])
 def tips():
     data = request.json
     if data[SKEY] == SVALUE:
         try:
             work.tipall()
             return{
-                'status':1,
+                'status': 1,
             }
         except Exception as e:
             return {
@@ -103,4 +116,4 @@ def download(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=DEBUG, host='0.0.0.0',port=PORT)
+    app.run(debug=DEBUG, host='0.0.0.0', port=PORT)

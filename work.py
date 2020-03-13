@@ -214,3 +214,33 @@ def sendmsg(msg,uid):
         return resp.json()['status']
     except Exception as e:
         return str(e)
+
+def checkalldata():
+    allstudent = list(r.smembers("allStudentSet"))
+    allstudent.sort()
+    docardstudent = list(r.smembers("doCardStudent"))
+    docardstudent.sort()
+
+    wdk=[]
+    yc=[]
+
+    for sid in allstudent:
+        ts = r.hmget('student' + sid,'normal','name','classroom','te','knowNoReturn','changeArea')
+        if sid in docardstudent and ts[0] != '无异常':
+            yc.append({
+                'name':ts[1],
+                'cr':ts[2],
+                'te':ts[3],
+                'nr':ts[4],
+                'ch':ts[5],
+            })
+        else:
+            wdk.append({
+                'name':ts[1],
+                'cr':ts[2]
+            })
+
+    return {
+        'wdk':wdk,
+        'yc':yc,
+    }

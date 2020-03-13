@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mdui.min.css') }}">
+    <script src="{{ url_for('static', filename='js/mdui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/axios.js') }}"></script>
+    <title>2018级同学每日数据报送</title>
+</head>
+
+<body class="mdui-theme-primary-purple mdui-theme-layout-dark">
+    <div class="mdui-toolbar mdui-color-grey-500" style="margin-bottom:50px">
+        <div class="mdui-toolbar-spacer"></div>
+        <span class="mdui-typo-title">2018级同学每日数据报送</span>
+        <div class="mdui-toolbar-spacer"></div>
+    </div>
+    <div id="app" class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-col-12">
+                <div class="mdui-card mdui-color-grey-800" style="padding: 10px;">
+                    <h3>异常</h3>
+                    <div class="mdui-table">
+                        <table class="mdui-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>班级</th>
+                                    <th>体温</th>
+                                    <th>知晓不可反青</th>
+                                    <th>所在地迁移</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in yc">
+                                    {% raw %}
+                                    <td>
+                                        {{ item.name }}
+                                    </td>
+                                    <td>
+                                        {{ item.cr }}
+                                    </td>
+                                    <td>
+                                        {{ item.te }}
+                                    </td>
+                                    <td>
+                                        {{ item.nr }}
+                                    </td>
+                                    <td>
+                                        {{ item.ch }}
+                                    </td>
+                                    {% endraw %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>未填写</h3>
+                    <div class="mdui-table">
+                        <table class="mdui-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>班级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in wdk">
+                                    {% raw %}
+                                    <td>
+                                        {{ item.name }}
+                                    </td>
+                                    <td>
+                                        {{ item.cr }}
+                                    </td>
+                                    {% endraw %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        app = new Vue({
+            el: "#app",
+            data: {
+                wdk: [],
+                yc: [],
+            },
+            created: function () {
+                axios.post('/checkalldata')
+                    .then((res => (this.wdk = res.data.wdk, this.yc = res.data.yc)))
+            }
+        })
+    </script>
+</body>
+
+</html>
