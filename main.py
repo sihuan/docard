@@ -76,7 +76,7 @@ def getstudent():
 def docard():
     data = request.json
     try:
-        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change']):
+        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change'],data['video']):
             return {
                 'status': 1,
             }

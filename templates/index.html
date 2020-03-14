@@ -86,6 +86,23 @@
                                 否
                             </label>
                         </div>
+
+                        <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
+                            是否知道《关于组织全体师生收看学校开学前疫情防控规范培训特别节目的通知》 ？</div>
+                        <div style="margin-left: 30px;">
+                            <label class="mdui-radio">
+                                <input type="radio" value="知道" name="vd" v-model="video" />
+                                <i class="mdui-radio-icon"></i>
+                                是
+                            </label>
+
+                            <label class="mdui-radio">
+                                <input type="radio" value="不知道" name="vd" v-model="video" />
+                                <i class="mdui-radio-icon"></i>
+                                否，即刻去班级群查询
+                            </label>
+                        </div>
+
                         <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
                             最近20天之内有无更换过居住地？</div>
                         <div style="margin-left: 30px;">
@@ -107,10 +124,29 @@
                             <input v-model="caa" class="mdui-textfield-input" type="text" />
                         </div>
                         <div class="mdui-card-actions">
-                            <button @click="docard" class="mdui-btn mdui-ripple mdui-color-teal-300">打卡</button>
+                            <button @click="docarddiag" class="mdui-btn mdui-ripple mdui-color-teal-300">打卡</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="mdui-dialog" id="docard">
+            <div class="mdui-dialog-title">请阅读提醒后点击打卡</div>
+            <div class="mdui-dialog-content">
+                自3月14日至3月20日，每晚19:32（如《新闻联播》延时，节目播出时间顺延）选择收看 开学前疫情防控规范培训特别节目的方式：
+                <br/>
+                A电视端：山东教育卫视。
+                <br/>
+                B网络端：通过扫描通知文件中的二维码，进入“山东教育发布”微信公众号，在“疫情防控”中，打开“新课堂特别节目”观看。
+                <br/>
+                C网络端：通过扫描通知文件中的二维码，进入“山东教育电视台”微信公众号，在“疫情防控”中，打开“新课堂特别节目”观看。
+                <br/>
+                D网络端：通过扫描通知文件中的二维码，进入“山东高考一点通”微信公众号，在“疫情防控”中，打开“新课堂特别节目”观看。
+                <br/>
+                E网络端：通过扫描通知文件中的二维码，进入“山东教师队伍”微信公众号，在“疫情防控”中，打开“新课堂特别节目”观看。
+            </div>
+            <div class="mdui-dialog-actions">
+                <button class="mdui-btn mdui-ripple" @click='docard' mdui-dialog-confirm>打卡</button>
             </div>
         </div>
     </div>
@@ -139,6 +175,8 @@
         </div>
     </div>
 
+
+
     <script>
         app = new Vue({
             el: "#app",
@@ -152,6 +190,7 @@
                 noreturn: '',
                 cap: '',
                 caa: '',
+                video: '',
 
             },
             methods: {
@@ -161,6 +200,10 @@
                         })
                         .then((response => (this.status = response.data.status, this.studentinfo = response
                             .data.student)))
+                },
+                docarddiag: function (){
+                    var inst = new mdui.Dialog('#docard');
+                        inst.open()
                 },
                 docard: function () {
                     if (this.nowarea != '') {
@@ -188,6 +231,13 @@
                         inst.open()
                         return
                     }
+                    if (this.video != '') {
+                        video = this.video
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
                     if (this.cap == '否' || (this.cap == '是' && this.caa != '')) {
                         if (this.cap == '是') {
                             change = this.caa
@@ -210,6 +260,7 @@
                             te: te,
                             know: know,
                             change: change,
+                            video:video
                         })
                         .then(function (resp) {
                             status = resp.data.status
