@@ -53,7 +53,7 @@ def loadStudent(filename):
     rows = ws.rows
     for row in rows:
         line = [col.value for col in row]
-        newstudent = studentProfile(line[1],line[0],line[2],line[3])
+        newstudent = studentProfile(line[0],line[1],line[2],line[3])
         addNewStudent(newstudent)
 
 def export(filename):
