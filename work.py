@@ -19,7 +19,7 @@ class studentProfile():
         self.te = '正常'
         self.knowNoReturn = '知晓'
         self.changeArea = '无'
-        self.vidoe = '知道'
+        self.video = '知道'
 
 def addNewStudent(student):
     r.sadd('allStudentSet',student.sid)
