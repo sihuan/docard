@@ -76,7 +76,7 @@ def getstudent():
 def docard():
     data = request.json
     try:
-        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change'],data['video']):
+        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change'],data['video'],data['fasao']):
             return {
                 'status': 1,
             }
@@ -92,7 +92,7 @@ def reload():
     if data[SKEY] == SVALUE:
         try:
             work.r.flushall()
-            work.loadStudent('test.xlsx')
+            work.loadStudent('data.xlsx')
             return {
                 'status': 1
             }

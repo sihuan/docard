@@ -88,6 +88,22 @@
                         </div>
 
                         <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
+                            三月份以来是否有过感冒、发烧？</div>
+                        <div style="margin-left: 30px;">
+                            <label class="mdui-radio">
+                                <input type="radio" value="无" name="fs" v-model="fasao" />
+                                <i class="mdui-radio-icon"></i>
+                                无
+                            </label>
+
+                            <label class="mdui-radio">
+                                <input type="radio" value="有过" name="fs" v-model="fasao" />
+                                <i class="mdui-radio-icon"></i>
+                                有过
+                            </label>
+                        </div>
+
+                        <div class="mdui-typo-subheading" style="font-weight: 300; padding-top: 30px;">
                             是否知道《关于组织全体师生收看学校开学前疫情防控规范培训特别节目的通知》 ？</div>
                         <div style="margin-left: 30px;">
                             <label class="mdui-radio">
@@ -191,6 +207,7 @@
                 cap: '',
                 caa: '',
                 video: '',
+                fasao: '',
 
             },
             methods: {
@@ -238,6 +255,13 @@
                         inst.open()
                         return
                     }
+                    if (this.fasao != '') {
+                        fasao = this.fasao
+                    } else {
+                        var inst = new mdui.Dialog('#dialog');
+                        inst.open()
+                        return
+                    }
                     if (this.cap == '否' || (this.cap == '是' && this.caa != '')) {
                         if (this.cap == '是') {
                             change = this.caa
@@ -260,7 +284,8 @@
                             te: te,
                             know: know,
                             change: change,
-                            video:video
+                            video:video,
+                            fasao:fasao,
                         })
                         .then(function (resp) {
                             status = resp.data.status

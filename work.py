@@ -20,16 +20,17 @@ class studentProfile():
         self.knowNoReturn = '知晓'
         self.changeArea = '无'
         self.video = '知道'
+        self.fasao = '无'
 
 def addNewStudent(student):
     r.sadd('allStudentSet',student.sid)
     r.hmset('student' + student.sid, student.__dict__)
 
-def doCard(sid,nowArea,te,knowNoReturn,changeArea,video):
+def doCard(sid,nowArea,te,knowNoReturn,changeArea,video,fasao):
     sid = str(sid)
     a = list(r.smembers("allStudentSet"))
     if sid in a:
-        if te != '正常' or knowNoReturn != '知晓' or changeArea != '否' or video != '知道':
+        if te != '正常' or knowNoReturn != '知晓' or changeArea != '否' or video != '知道' or fasao != '无':
             normal = '异常'
         else:
             normal = '无异常'
@@ -39,7 +40,8 @@ def doCard(sid,nowArea,te,knowNoReturn,changeArea,video):
             'te':te,
             'knowNoReturn':knowNoReturn,
             'changeArea':changeArea,
-            'video': video
+            'video': video,
+            'fasao':fasao
         })
         r.sadd('doCardStudent',sid)
         return True
@@ -70,6 +72,7 @@ def export(filename):
         8:'知晓',
         9:'否',
         10:'知道',
+        11:'无',
     }
     ws1.column_dimensions['A'].width = 20.0
     ws1.column_dimensions['D'].width = 20.0
@@ -89,9 +92,9 @@ def export(filename):
     ws2.column_dimensions['D'].width = 20.0
 
 
-    ws1.append(['学号','姓名','专业','班级','是否存在异常','居住地','体温','是否知晓不可随意反青','是否有地址迁移','是否知道疫情防控节目'])
+    ws1.append(['学号','姓名','专业','班级','是否存在异常','居住地','体温','是否知晓不可随意反青','是否有地址迁移','是否知道疫情防控节目','三月以来是否有过感冒发烧'])
     ws2.append(['学号','姓名','专业','班级'])
-    ws3.append(['学号','姓名','专业','班级','是否存在异常','居住地','体温','是否知晓不可随意反青','是否有地址迁移','是否知道疫情防控节目'])
+    ws3.append(['学号','姓名','专业','班级','是否存在异常','居住地','体温','是否知晓不可随意反青','是否有地址迁移','是否知道疫情防控节目','三月以来是否有过感冒发烧'])
     
     allstudent = list(r.smembers("allStudentSet"))
     allstudent.sort()
@@ -112,7 +115,7 @@ def export(filename):
 
                 ws1.cell(r1,5).fill = redfill
                 ws3.cell(r3,5).fill = redfill
-                for c in range(7,11):
+                for c in range(7,12):
                     if ts[c-1] != okstatus[c]:
                         ws1.cell(r1,c).fill = yellowfill
                         ws3.cell(r3,c).fill = yellowfill
@@ -228,7 +231,7 @@ def checkalldata():
     yc=[]
 
     for sid in allstudent:
-        ts = r.hmget('student' + sid,'normal','name','classroom','te','knowNoReturn','changeArea','video')
+        ts = r.hmget('student' + sid,'normal','name','classroom','te','knowNoReturn','changeArea','video','fasao')
         if sid in docardstudent:
             if ts[0] != '无异常':
                 yc.append({
@@ -238,6 +241,7 @@ def checkalldata():
                     'nr':ts[4],
                     'ch':ts[5],
                     'video':ts[6],
+                    'fasao':ts[7]
                 })
         else:
             wdk.append({
