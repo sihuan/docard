@@ -44,6 +44,7 @@ def doCard(sid,nowArea,te,knowNoReturn,changeArea,video,fasao):
             'fasao':fasao
         })
         r.sadd('doCardStudent',sid)
+        print('log 打卡',sid,nowArea,te,knowNoReturn,changeArea,video,fasao)
         return True
     else:
         return False
@@ -126,6 +127,9 @@ def export(filename):
     wb.save(filename)
 
 def findstudent(sid):
+    docardstudent = list(r.smembers("doCardStudent"))
+    if sid in docardstudent:
+        return 1
     sid = 'student'+str(sid)
     return r.hgetall(sid)
 

@@ -58,18 +58,23 @@ def tips():
 @app.route('/getstudent', methods=['POST'])
 def getstudent():
     data = request.json
-    sid = data['sid']
-    print(sid)
+    sid = str(data['sid'])
+    print("log 查询学号" + sid)
     s = work.findstudent(sid)
-    if s:
+    if s == 1:
         return {
+            'status': -1,
+        }
+    else:
+        if s:
+            return {
             'status': 1,
             'student': s,
         }
-    else:
-        return {
-            'status': 0,
-        }
+        else:
+            return {
+                'status': 0,
+            }
 
 
 @app.route('/docard', methods=['POST'])
