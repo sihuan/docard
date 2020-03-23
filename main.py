@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect
 import work
 
 from config import SKEY, SVALUE, PORT, DEBUG
 
 app = Flask(__name__)
 
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return redirect('https://blog.sakuya.love')
 
 @app.route('/')
 def index():
@@ -68,9 +72,9 @@ def getstudent():
     else:
         if s:
             return {
-            'status': 1,
-            'student': s,
-        }
+                'status': 1,
+                'student': s,
+            }
         else:
             return {
                 'status': 0,
@@ -81,7 +85,7 @@ def getstudent():
 def docard():
     data = request.json
     try:
-        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change'],data['video'],data['fasao']):
+        if work.doCard(data['sid'], data['now'], data['te'], data['know'], data['change'], data['video'], data['fasao']):
             return {
                 'status': 1,
             }
